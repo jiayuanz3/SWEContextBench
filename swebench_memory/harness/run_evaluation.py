@@ -4367,8 +4367,12 @@ git apply /patch.diff
         tests_before, tests_after, fail_to_pass_tests, pass_to_pass_tests
     )
 
-    # Determine if resolved
-    resolved = len(f2p_success) == len(fail_to_pass_tests) and len(f2p_failure) == 0
+    # Determine if resolved: all FAIL_TO_PASS tests must pass (bug fixed) AND
+    # all PASS_TO_PASS tests must still pass (no regressions introduced).
+    resolved = (
+        len(f2p_success) == len(fail_to_pass_tests) and len(f2p_failure) == 0
+        and len(p2p_failure) == 0
+    )
 
     print()
     print(f"Results:")
